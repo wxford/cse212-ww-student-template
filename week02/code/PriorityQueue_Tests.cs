@@ -1,29 +1,50 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-// TODO Problem 2 - Write and run test cases and fix the code to match requirements.
+using System;
 
 [TestClass]
-public class PriorityQueueTests
+public class PriorityQueue_Tests
 {
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
-    public void TestPriorityQueue_1()
+    public void TestSingleEnqueueDequeue()
     {
-        var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+        // Expectation: Dequeue should return the single item added.
+        var pq = new PriorityQueue();
+        pq.Enqueue("Task1", 5);
+        Assert.AreEqual("Task1", pq.Dequeue());
+        // ✅ Passes: Single item dequeued successfully.
     }
 
     [TestMethod]
-    // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
-    public void TestPriorityQueue_2()
+    public void TestHighestPriorityDequeue()
     {
-        var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+        // Expectation: Highest priority value should be dequeued.
+        var pq = new PriorityQueue();
+        pq.Enqueue("Task1", 2);
+        pq.Enqueue("Task2", 5);
+        pq.Enqueue("Task3", 1);
+
+        Assert.AreEqual("Task2", pq.Dequeue());
+        // ✅ Passes: Task2 had the highest priority (5).
     }
 
-    // Add more test cases as needed below.
+    [TestMethod]
+    public void TestFIFOOnSamePriority()
+    {
+        // Expectation: If priorities are equal, first entered dequeued first.
+        var pq = new PriorityQueue();
+        pq.Enqueue("First", 3);
+        pq.Enqueue("Second", 3);
+
+        Assert.AreEqual("First", pq.Dequeue());
+        // ✅ Passes: FIFO is preserved when priority is tied.
+    }
+
+    [TestMethod]
+    public void TestEmptyQueueThrows()
+    {
+        // Expectation: Dequeue from empty queue should throw exception.
+        var pq = new PriorityQueue();
+        Assert.ThrowsException<InvalidOperationException>(() => pq.Dequeue());
+        // ✅ Passes: Exception thrown as expected.
+    }
 }
