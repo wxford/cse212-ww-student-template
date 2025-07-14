@@ -2,26 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 
+public class PriorityQueueItem
+{
+    public string Value { get; }
+    public int Priority { get; }
+
+    public PriorityQueueItem(string value, int priority)
+    {
+        Value = value;
+        Priority = priority;
+    }
+}
+
 public class PriorityQueue
 {
-    private List<(string value, int priority)> queue = new List<(string value, int priority)>();
+    private List<PriorityQueueItem> items = new List<PriorityQueueItem>();
 
     public void Enqueue(string value, int priority)
     {
-        queue.Add((value, priority));
+        items.Add(new PriorityQueueItem(value, priority));
     }
 
     public string Dequeue()
     {
-        if (queue.Count == 0)
+        if (items.Count == 0)
         {
-            throw new InvalidOperationException("Queue is empty");
+            throw new InvalidOperationException("Queue is empty.");
         }
 
-        int highestPriority = queue.Max(x => x.priority);
-        int index = queue.FindIndex(x => x.priority == highestPriority);
-        var item = queue[index];
-        queue.RemoveAt(index);
-        return item.value;
+        int maxPriority = items.Max(i => i.Priority);
+        int index = items.FindIndex(i => i.Priority == maxPriority);
+        string result = items[index].Value;
+        items.RemoveAt(index);
+        return result;
     }
 }

@@ -3,31 +3,33 @@ using System.Collections.Generic;
 
 public class TakingTurnsQueue
 {
-    private Queue<(string name, int turns)> queue = new Queue<(string name, int turns)>();
+    private Queue<Person> queue = new Queue<Person>();
 
-    public void AddPerson(string name, int turns)
+    public void AddPerson(string name, int numTurns)
     {
-        queue.Enqueue((name, turns));
+        queue.Enqueue(new Person(name, numTurns));
     }
 
     public string GetNextPerson()
     {
         if (queue.Count == 0)
         {
-            throw new InvalidOperationException("Queue is empty");
+            throw new InvalidOperationException("Queue is empty.");
         }
 
-        var person = queue.Dequeue();
+        Person person = queue.Dequeue();
 
-        if (person.turns == 0 || person.turns < 0)
+        if (person.TurnsLeft > 1)
         {
-            queue.Enqueue((person.name, person.turns)); // Infinite turns
+            person.TurnsLeft--;
+            queue.Enqueue(person);
         }
-        else if (person.turns > 1)
+        else if (person.TurnsLeft <= 0)
         {
-            queue.Enqueue((person.name, person.turns - 1)); // One turn used
+            // Infinite turns
+            queue.Enqueue(person);
         }
 
-        return person.name;
+        return person.Name;
     }
 }

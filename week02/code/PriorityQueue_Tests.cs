@@ -4,47 +4,41 @@ using System;
 [TestClass]
 public class PriorityQueue_Tests
 {
+    /*
+    Test: Highest priority value should be dequeued.
+    Result: Passes.
+    */
     [TestMethod]
-    public void TestSingleEnqueueDequeue()
+    public void TestDequeueHighestPriority()
     {
-        // Expectation: Dequeue should return the single item added.
-        var pq = new PriorityQueue();
-        pq.Enqueue("Task1", 5);
-        Assert.AreEqual("Task1", pq.Dequeue());
-        // ✅ Passes: Single item dequeued successfully.
+        PriorityQueue queue = new PriorityQueue();
+        queue.Enqueue("Low", 1);
+        queue.Enqueue("High", 5);
+        Assert.AreEqual("High", queue.Dequeue());
     }
 
+    /*
+    Test: FIFO preserved for same priority.
+    Result: Passes after fixing logic to find the first item with max priority.
+    */
     [TestMethod]
-    public void TestHighestPriorityDequeue()
+    public void TestFIFOWithSamePriority()
     {
-        // Expectation: Highest priority value should be dequeued.
-        var pq = new PriorityQueue();
-        pq.Enqueue("Task1", 2);
-        pq.Enqueue("Task2", 5);
-        pq.Enqueue("Task3", 1);
-
-        Assert.AreEqual("Task2", pq.Dequeue());
-        // ✅ Passes: Task2 had the highest priority (5).
+        PriorityQueue queue = new PriorityQueue();
+        queue.Enqueue("First", 3);
+        queue.Enqueue("Second", 3);
+        Assert.AreEqual("First", queue.Dequeue());
     }
 
+    /*
+    Test: Should throw error if queue is empty.
+    Result: Passes.
+    */
     [TestMethod]
-    public void TestFIFOOnSamePriority()
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void TestDequeueEmptyQueue()
     {
-        // Expectation: If priorities are equal, first entered dequeued first.
-        var pq = new PriorityQueue();
-        pq.Enqueue("First", 3);
-        pq.Enqueue("Second", 3);
-
-        Assert.AreEqual("First", pq.Dequeue());
-        // ✅ Passes: FIFO is preserved when priority is tied.
-    }
-
-    [TestMethod]
-    public void TestEmptyQueueThrows()
-    {
-        // Expectation: Dequeue from empty queue should throw exception.
-        var pq = new PriorityQueue();
-        Assert.ThrowsException<InvalidOperationException>(() => pq.Dequeue());
-        // ✅ Passes: Exception thrown as expected.
+        PriorityQueue queue = new PriorityQueue();
+        queue.Dequeue();
     }
 }

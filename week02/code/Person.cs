@@ -1,16 +1,12 @@
+// DO NOT MODIFY THIS FILE
 public class Person
 {
-    public readonly string Name;
-    public int Turns { get; set; }
+    public string Name { get; }
+    public int TurnsLeft { get; set; }
 
-    internal Person(string name, int turns)
+    public Person(string name, int turnsLeft)
     {
         Name = name;
-        Turns = turns;
-    }
-
-    public override string ToString()
-    {
-        return Turns <= 0 ? $"({Name}:Forever)" : $"({Name}:{Turns})";
+        TurnsLeft = turnsLeft;
     }
 }

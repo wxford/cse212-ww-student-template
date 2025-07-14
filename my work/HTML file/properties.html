@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties | GoBuyIt Properties | Real Estate, Lands, Houses & Vehicles in Sierra Leone</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/lightbox.min.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +232 25 123456</span>
+                    <span><i class="fas fa-envelope"></i> info@gobuyitsl.com</span>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="index.html">GoBuyIt<span>Properties</span></a>
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="properties.html" class="active">Properties</a></li>
+                        <li><a href="lands.html">Lands</a></li>
+                        <li><a href="houses.html">Houses</a></li>
+                        <li><a href="vehicles.html">Vehicles</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="nav-icons">
+                    <a href="search.html"><i class="fas fa-search"></i></a>
+                    <a href="login.html"><i class="fas fa-user"></i></a>
+                    <i class="fas fa-bars menu-icon" onclick="menutoggle()"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>All Properties in Sierra Leone</h1>
+            <p>Browse our collection of premium properties across Freetown and beyond</p>
+        </div>
+    </section>
+
+    <!-- Property Listings -->
+    <section class="property-listings">
+        <div class="container">
+            <div class="filter-options">
+                <div class="filter-group">
+                    <label for="property-type">Property Type:</label>
+                    <select id="property-type">
+                        <option value="all">All Types</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="land">Land</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="location">Location:</label>
+                    <select id="location">
+                        <option value="all">All Locations</option>
+                        <option value="freetown">Freetown</option>
+                        <option value="lumley">Lumley</option>
+                        <option value="aberden">Aberdeen</option>
+                        <option value="wilberforce">Wilberforce</option>
+                        <option value="bo">Bo</option>
+                        <option value="kenema">Kenema</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price-range">Price Range:</label>
+                    <select id="price-range">
+                        <option value="all">All Prices</option>
+                        <option value="0-500000000">Below SLL 500M</option>
+                        <option value="500000000-2000000000">SLL 500M - SLL 2B</option>
+                        <option value="2000000000-5000000000">SLL 2B - SLL 5B</option>
+                        <option value="5000000000-10000000000">SLL 5B - SLL 10B</option>
+                        <option value="10000000000+">Above SLL 10B</option>
+                    </select>
+                </div>
+                <button class="btn" id="apply-filters">Apply Filters</button>
+            </div>
+
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-badge">For Sale</div>
+                    <div class="property-image">
+                        <a href="images/property1.jpg" data-lightbox="property" data-title="Luxury Villa in Aberdeen">
+                            <img src="images/property1.jpg" alt="Luxury Villa">
+                        </a>
+                        <div class="property-price">SLL 3,500,000,000</div>
+                    </div>
+                    <div class="property-details">
+                        <h3><a href="property-details.html">Luxury Villa in Aberdeen</a></h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Aberdeen, Freetown</p>
+                        <div class="property-features">
+                            <span><i class="fas fa-bed"></i> 5 Beds</span>
+                            <span><i class="fas fa-bath"></i> 4 Baths</span>
+                            <span><i class="fas fa-vector-square"></i> 4500 sqft</span>
+                        </div>
+                        <div class="property-footer">
+                            <a href="property-details.html" class="btn btn-outline">View Details</a>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-badge">For Rent</div>
+                    <div class="property-image">
+                        <a href="images/property2.jpg" data-lightbox="property" data-title="Modern Apartment in Lumley">
+                            <img src="images/property2.jpg" alt="Modern Apartment">
+                        </a>
+                        <div class="property-price">SLL 150,000,000/yr</div>
+                    </div>
+                    <div class="property-details">
+                        <h3><a href="property-details.html">Modern Apartment in Lumley</a></h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Lumley, Freetown</p>
+                        <div class="property-features">
+                            <span><i class="fas fa-bed"></i> 3 Beds</span>
+                            <span><i class="fas fa-bath"></i> 2 Baths</span>
+                            <span><i class="fas fa-vector-square"></i> 1800 sqft</span>
+                        </div>
+                        <div class="property-footer">
+                            <a href="property-details.html" class="btn btn-outline">View Details</a>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-badge">For Sale</div>
+                    <div class="property-image">
+                        <a href="images/property3.jpg" data-lightbox="property" data-title="Commercial Land in Wilberforce">
+                            <img src="images/property3.jpg" alt="Commercial Land">
+                        </a>
+                        <div class="property-price">SLL 1,200,000,000</div>
+                    </div>
+                    <div class="property-details">
+                        <h3><a href="property-details.html">Commercial Land in Wilberforce</a></h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Wilberforce, Freetown</p>
+                        <div class="property-features">
+                            <span><i class="fas fa-vector-square"></i> 2000 sqm</span>
+                            <span><i class="fas fa-road"></i> Road Access</span>
+                            <span><i class="fas fa-tint"></i> Waterfront</span>
+                        </div>
+                        <div class="property-footer">
+                            <a href="property-details.html" class="btn btn-outline">View Details</a>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-badge">For Sale</div>
+                    <div class="property-image">
+                        <a href="images/property4.jpg" data-lightbox="property" data-title="Office Space in Central Freetown">
+                            <img src="images/property4.jpg" alt="Office Space">
+                        </a>
+                        <div class="property-price">SLL 2,800,000,000</div>
+                    </div>
+                    <div class="property-details">
+                        <h3><a href="property-details.html">Office Space in Central Freetown</a></h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Central Business District, Freetown</p>
+                        <div class="property-features">
+                            <span><i class="fas fa-building"></i> 5 Floors</span>
+                            <span><i class="fas fa-vector-square"></i> 10,000 sqft</span>
+                            <span><i class="fas fa-parking"></i> Parking Space</span>
+                        </div>
+                        <div class="property-footer">
+                            <a href="property-details.html" class="btn btn-outline">View Details</a>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#"><i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Can't Find What You're Looking For?</h2>
+                <p>Contact our expert agents for personalized property recommendations in Sierra Leone</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn">Contact Us</a>
+                    <a href="tel:+23225123456" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>GoBuyIt Properties</h3>
+                    <p>Your trusted partner for premium real estate solutions in Sierra Leone. We specialize in connecting buyers with their dream properties.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="properties.html">Properties</a></li>
+                        <li><a href="lands.html">Lands</a></li>
+                        <li><a href="houses.html">Houses</a></li>
+                        <li><a href="vehicles.html">Vehicles</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">Property Valuation</a></li>
+                        <li><a href="#">Property Management</a></li>
+                        <li><a href="#">Investment Consulting</a></li>
+                        <li><a href="#">Legal Services</a></li>
+                        <li><a href="#">Mortgage Assistance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> 25 Siaka Stevens St, Freetown, Sierra Leone</li>
+                        <li><i class="fas fa-phone"></i> +232 25 123456</li>
+                        <li><i class="fas fa-envelope"></i> info@gobuyitsl.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 9AM - 6PM</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2023 GoBuyIt Properties Sierra Leone. All Rights Reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/lightbox-plus-jquery.min.js"></script>
+    <script src="JavaScript-File/main.js"></script>
+</body>
+</html>
