@@ -1,76 +1,146 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 
 public class SetsAndMaps
 {
-    // Problem 1: Find Pairs
-    public static List<string> FindPairs(List<string> words)
+    // Problem 1: Find Pairs with Sets
+    public static string[] FindPairs(string[] words)
     {
-        var result = new List<string>();
-        var set = new HashSet<string>();
+        HashSet<string> wordSet = new HashSet<string>();
+        List<string> result = new List<string>();
 
-        foreach (var word in words)
+        foreach (string word in words)
         {
-            string reverse = new string(new[] { word[1], word[0] });
-            if (set.Contains(reverse))
+            // Skip words with identical letters (e.g., "aa")
+            if (word[0] == word[1])
+                continue;
+
+            // Create the reversed word
+            string reversed = word[1].ToString() + word[0].ToString();
+
+            // If reversed word is in the set, we found a symmetric pair
+            if (wordSet.Contains(reversed))
             {
-                result.Add($"{word} & {reverse}");
+                result.Add($"{reversed} & {word}");
             }
-            set.Add(word);
-        }
-
-        return result;
-    }
-
-    // Problem 2: Summarize Degrees from CSV
-    public static Dictionary<string, int> SummarizeDegrees(string filePath)
-    {
-        var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filePath))
-        {
-            var parts = line.Split(',');
-            if (parts.Length >= 5)
+            else
             {
-                string degree = parts[4].Trim();
-                if (degrees.ContainsKey(degree))
-                    degrees[degree]++;
-                else
-                    degrees[degree] = 1;
+                wordSet.Add(word);
             }
         }
-        return degrees;
+
+        return result.ToArray();
     }
 
-    // Problem 3: Check if two strings are anagrams
+    // Problem 2: Degree Summary
+    public static Dictionary<string, int> SummarizeDegrees(string filename)
+    {
+        Dictionary<string, int> degreeCounts = new Dictionary<string, int>();
+
+        try
+        {
+            string[] lines = File.ReadAllLines(filename);
+            foreach (string line in lines.Skip(1)) // Skip header if present
+            {
+                string[] columns = line.Split(',');
+                if (columns.Length >= 4)
+                {
+                    string degree = columns[3].Trim();
+                    if (!string.IsNullOrEmpty(degree))
+                    {
+                        if (degreeCounts.ContainsKey(degree))
+                        {
+                            degreeCounts[degree]++;
+                        }
+                        else
+                        {
+                            degreeCounts[degree] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error reading file: {ex.Message}");
+        }
+
+        return degreeCounts;
+    }
+
+    // Problem 3: Anagrams
     public static bool IsAnagram(string word1, string word2)
     {
-        Dictionary<char, int> Normalize(string input)
-        {
-            var dict = new Dictionary<char, int>();
-            foreach (char c in input.ToLower())
-            {
-                if (char.IsWhiteSpace(c)) continue;
-                if (!dict.ContainsKey(c))
-                    dict[c] = 1;
-                else
-                    dict[c]++;
-            }
-            return dict;
-        }
+        // Remove spaces and convert to lowercase
+        word1 = word1.Replace(" ", "").ToLower();
+        word2 = word2.Replace(" ", "").ToLower();
 
-        var d1 = Normalize(word1);
-        var d2 = Normalize(word2);
-
-        if (d1.Count != d2.Count)
+        // If lengths differ, they can't be anagrams
+        if (word1.Length != word2.Length)
             return false;
 
-        foreach (var kvp in d1)
+        // Use dictionary to count characters in word1
+        Dictionary<char, int> charCount = new Dictionary<char, int>();
+        foreach (char c in word1)
         {
-            if (!d2.ContainsKey(kvp.Key) || d2[kvp.Key] != kvp.Value)
-                return false;
+            charCount[c] = charCount.GetValueOrDefault(c, 0) + 1;
         }
 
-        return true;
+        // Subtract counts for word2
+        foreach (char c in word2)
+        {
+            if (!charCount.ContainsKey(c))
+                return false;
+            charCount[c]--;
+            if (charCount[c] == 0)
+                charCount.Remove(c);
+        }
+
+        // If dictionary is empty, words are anagrams
+        return charCount.Count == 0;
+    }
+
+    // Problem 5: Earthquake JSON Data
+    public static string[] EarthquakeDailySummary()
+    {
+        List<string> result = new List<string>();
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+                string jsonResponse = client.GetStringAsync(url).Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                FeatureCollection data = JsonSerializer.Deserialize<FeatureCollection>(jsonResponse, options);
+
+                if (data?.features != null)
+                {
+                    foreach (var feature in data.features)
+                    {
+                        string place = feature.properties?.place ?? "Unknown Location";
+                        double magnitude = feature.properties?.mag ?? 0.0;
+                        result.Add($"{place} - Mag {magnitude:F2}");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("No features found in JSON data or data is null.");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error fetching or parsing earthquake data: {ex.Message}");
+        }
+
+        return result.ToArray();
     }
 }
