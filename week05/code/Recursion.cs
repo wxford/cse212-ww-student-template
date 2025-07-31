@@ -4,14 +4,14 @@ using System.Linq;
 
 public static class Recursion
 {
-    // Problem 1 (Keep exactly the same)
+    // Problem 1: Sum of squares
     public static int SumSquaresRecursive(int n)
     {
         if (n <= 0) return 0;
         return n * n + SumSquaresRecursive(n - 1);
     }
 
-    // Problem 2 (Keep exactly the same)
+    // Problem 2: Permutations
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         if (word.Length == size)
@@ -22,99 +22,80 @@ public static class Recursion
 
         for (int i = 0; i < letters.Length; i++)
         {
-            char currentChar = letters[i];
-            string remainingLetters = letters.Remove(i, 1);
-            PermutationsChoose(results, remainingLetters, size, word + currentChar);
+            PermutationsChoose(
+                results,
+                letters.Remove(i, 1),
+                size,
+                word + letters[i]
+            );
         }
     }
 
-    // Problem 3 (Keep exactly the same)
-    public static decimal CountWaysToClimb(int s, Dictionary<int, decimal> remember = null)
+    // Problem 3: Climbing stairs
+    public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
-        remember ??= new Dictionary<int, decimal>();
-        if (remember.ContainsKey(s)) return remember[s];
+        var memo = remember ?? new Dictionary<int, decimal>();
+        if (memo.ContainsKey(s)) return memo[s];
 
-        if (s == 0) return 0;
+        // Base cases
+        if (s < 0) return 0;
+        if (s == 0) return 1;
         if (s == 1) return 1;
         if (s == 2) return 2;
         if (s == 3) return 4;
 
-        decimal ways = CountWaysToClimb(s - 1, remember) + 
-                     CountWaysToClimb(s - 2, remember) + 
-                     CountWaysToClimb(s - 3, remember);
-        remember[s] = ways;
+        decimal ways = CountWaysToClimb(s - 1, memo) 
+                     + CountWaysToClimb(s - 2, memo) 
+                     + CountWaysToClimb(s - 3, memo);
+        memo[s] = ways;
         return ways;
     }
 
-    // Problem 4 (Keep exactly the same)
+    // Problem 4: Wildcard binary
     public static void WildcardBinary(string pattern, List<string> results)
     {
-        int wildcardIndex = pattern.IndexOf('*');
-        if (wildcardIndex == -1)
+        int wildIndex = pattern.IndexOf('*');
+        if (wildIndex == -1)
         {
             results.Add(pattern);
             return;
         }
 
-        string prefix = pattern[..wildcardIndex];
-        string suffix = pattern[(wildcardIndex + 1)..];
-
-        WildcardBinary(prefix + "0" + suffix, results);
-        WildcardBinary(prefix + "1" + suffix, results);
+        WildcardBinary(pattern[..wildIndex] + "0" + pattern[(wildIndex + 1)..], results);
+        WildcardBinary(pattern[..wildIndex] + "1" + pattern[(wildIndex + 1)..], results);
     }
 
-    // Problem 5 (Only change IsEnd to CheckEnd)
-    public static void SolveMaze(List<string> results, Maze maze, int x = 0, int y = 0, List<(int x, int y)> currPath = null)
+    // Problem 5: Maze solver (fixed output format)
+    public static void SolveMaze(List<string> results, Maze maze, int x = 0, int y = 0, List<(int x, int y)>? currPath = null)
     {
-        currPath ??= new List<(int x, int y)>();
-        currPath.Add((x, y));
+        var path = currPath ?? new List<(int x, int y)>();
+        path.Add((x, y));
 
-        if (maze.CheckEnd(x, y))  // Changed from IsEnd to CheckEnd
+        if (maze.IsEnd(x, y))
         {
-            results.Add(PathToString(currPath));
-            currPath.RemoveAt(currPath.Count - 1);
+            results.Add(PathToString(path));
+            path.RemoveAt(path.Count - 1);
             return;
         }
 
-        TryMove(results, maze, x + 1, y, new List<(int x, int y)>(currPath));
-        TryMove(results, maze, x, y + 1, new List<(int x, int y)>(currPath));
-        TryMove(results, maze, x - 1, y, new List<(int x, int y)>(currPath));
-        TryMove(results, maze, x, y - 1, new List<(int x, int y)>(currPath));
+        var pathForValidation = path.Select(p => new ValueTuple<int, int>(p.x, p.y)).ToList();
+        
+        // Try all directions
+        if (maze.IsValidMove(pathForValidation, x + 1, y))
+            SolveMaze(results, maze, x + 1, y, new List<(int x, int y)>(path));
+        if (maze.IsValidMove(pathForValidation, x, y + 1))
+            SolveMaze(results, maze, x, y + 1, new List<(int x, int y)>(path));
+        if (maze.IsValidMove(pathForValidation, x - 1, y))
+            SolveMaze(results, maze, x - 1, y, new List<(int x, int y)>(path));
+        if (maze.IsValidMove(pathForValidation, x, y - 1))
+            SolveMaze(results, maze, x, y - 1, new List<(int x, int y)>(path));
 
-        currPath.RemoveAt(currPath.Count - 1);
+        path.RemoveAt(path.Count - 1);
     }
 
-    private static void TryMove(List<string> results, Maze maze, int x, int y, List<(int x, int y)> path)
-    {
-        if (maze.IsValidMove(x, y, path))
-            SolveMaze(results, maze, x, y, path);
-    }
-
+    // Fixed to match test's expected format
     private static string PathToString(List<(int x, int y)> path)
     {
-        return string.Join("->", path.Select(p => $"({p.x},{p.y})"));
-    }
-}
-
-public class Maze
-{
-    private readonly int[,] grid;
-    private readonly int size;
-    private readonly (int x, int y) endPosition;
-
-    public Maze(int[,] grid, (int x, int y) endPosition)
-    {
-        this.grid = grid ?? throw new ArgumentNullException(nameof(grid));
-        this.size = grid.GetLength(0);
-        this.endPosition = endPosition;
-    }
-
-    public bool CheckEnd(int x, int y) => x == endPosition.x && y == endPosition.y;  // Renamed from IsEnd
-
-    public bool IsValidMove(int x, int y, List<(int x, int y)> path)
-    {
-        if (x < 0 || x >= size || y < 0 || y >= size) return false;
-        if (grid[x, y] == 0) return false;
-        return !path.Any(p => p.x == x && p.y == y);
+        return $"<List>{{{string.Join(", ", path.Select(p => $"({p.x}, {p.y})"))}}}";
     }
 }
